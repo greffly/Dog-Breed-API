@@ -5,10 +5,15 @@ function getDogImages() {
   let dogBreed = $('.dogBreed').val();
   //console.log('Showing breed of dog: ' + dogBreed);
   fetch('https://dog.ceo/api/breed/' + dogBreed + '/images/random')
-    .then(response => response.json())
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      }
+        throw new Error(response.statusText);
+      })
     .then(responseJson =>
         displayResults(responseJson))
-    .catch(error => alert('Something went wrong.'));
+    .catch(error => alert('Something went wrong. This went wrong: ' + error.stack));
 }
 
 function displayResults(responseJson) {
